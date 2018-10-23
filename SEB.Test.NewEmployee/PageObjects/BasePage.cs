@@ -12,7 +12,6 @@ namespace SEB.Test.NewEmployee.PageObjects
         public BasePage(IWebDriver driver)
         {
             Driver = driver;
-            //driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com");
         }
 
         public IWebDriver Driver { get; set; }

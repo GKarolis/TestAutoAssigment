@@ -31,6 +31,20 @@ namespace SEB.Test.NewEmployee.PageObjects
 
         public IWebElement SaveButton => Driver.FindElement(By.Id("btnSave"));
 
+        public void EnterAddress(string addr1, string addr2, string city, string zipPostalCode)
+        {
+            EnterStreetAddress1(addr1);
+            EnterStreetAddress2(addr2);
+            EnterCity(city);
+            EnterZipCode(zipPostalCode);
+        }
+
+        public void EnterContactInfo(string mobile, string workEmail)
+        {
+            EnterMobileNumber(mobile);
+            EnterWorkEmail(workEmail);
+        }
+
         public void EnterStreetAddress1(string address1)
         {
             AddressStreet1Field.Click();

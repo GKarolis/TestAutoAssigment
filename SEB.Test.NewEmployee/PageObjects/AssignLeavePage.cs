@@ -27,6 +27,11 @@ namespace SEB.Test.NewEmployee.PageObjects
 
         public IWebElement CommentField => Driver.FindElement(By.Id("assignleave_txtComment"));
 
+        public IWebElement WelcomeLinkButton => Driver.FindElement(By.XPath("//*[@id='welcome']"));
+        public IWebElement WelcomeMenu => Driver.FindElement(By.XPath("//*[@id='welcome-menu']/ul/li[2]/a")); //.SendKeys("");
+        public IWebElement LogOutLinkButton => Driver.FindElement(By.XPath("//*[@id='welcome-menu']/ul/li[2]/a")); //.Click();
+
+
         public void EnterEmployeeName(string fullName)
         {
             EmployeeName.Click();
@@ -39,6 +44,12 @@ namespace SEB.Test.NewEmployee.PageObjects
             CommentField.Click();
             CommentField.Clear();
             CommentField.SendKeys(comment);
+        }
+
+        public void LogOut()
+        {
+            WelcomeMenu.SendKeys("");
+            LogOutLinkButton.Click();
         }
     }
 }

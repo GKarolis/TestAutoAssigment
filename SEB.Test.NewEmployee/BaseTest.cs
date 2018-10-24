@@ -30,9 +30,6 @@ namespace SEB.Test.NewEmployee
                 case "InternetExplorer":
                     driver = new InternetExplorerDriver();
                     break;
-                //case "Firefox":    //Firefox neturiu, gryba pjauna pas mane.. 
-                //    driver = new FirefoxDriver();
-                //    break;
             }
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("https://opensource-demo.orangehrmlive.com");
@@ -42,7 +39,7 @@ namespace SEB.Test.NewEmployee
         [TearDown]
         public void EndTest()
         {
-            driver.Close(); //Blagadariu..
+            driver.Close();
         }
     }
 }

@@ -22,5 +22,7 @@ namespace SEB.Test.NewEmployee.PageObjects
         public IWebElement DateOfBirth => Driver.FindElement(By.Id("personal_DOB"));
 
         public IWebElement SaveButton => Driver.FindElement(By.Id("btnSave"));
+
+
     }
 }

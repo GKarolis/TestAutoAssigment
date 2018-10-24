@@ -29,18 +29,28 @@ namespace SEB.Test.NewEmployee.PageObjects
 
         public AddNewEmployeePage(IWebDriver driver) : base(driver) { }
 
-        public void EnterFirstName(string firstName)
+        public void GoToAddNewEmployeeTab()
+        {
+            PIM.Click();
+            AddEmployee.Click();
+        }
+
+        public void EnterFullName(string firstName, string lastName)
         {
             FirstNameField.Click();
             FirstNameField.Clear();
             FirstNameField.SendKeys(firstName);
-        }
 
-        public void EnterLastName(string lastName)
-        {
             LastNameField.Click();
             LastNameField.Clear();
             LastNameField.SendKeys(lastName);
+        }
+
+        public void CreateLoginDetails(string usrName, string psw)
+        {
+            CreateLoginDetailsChkBox.Click();
+            EnterUserName(usrName);
+            EnterPassword(psw);
         }
 
         public void EnterUserName(string userName)
@@ -55,13 +65,9 @@ namespace SEB.Test.NewEmployee.PageObjects
             PasswordField.Click();
             PasswordField.Clear();
             PasswordField.SendKeys(password);
-        }
-
-        public void RepeatPassword(string repPassword)
-        {
             RepeatPasswordField.Click();
             RepeatPasswordField.Clear();
-            RepeatPasswordField.SendKeys(repPassword);
+            RepeatPasswordField.SendKeys(password);
         }
     }
 }

@@ -8,41 +8,29 @@ using System.Threading;
 
 namespace SEB.Test.NewEmployee
 {
-    class Tests : BaseTest
+    class NewEmployeeCreationAndAssignLeaveTest : BaseTest
     {
         Random random = new Random();
         Employee employee = new Employee();
         DateTime date = DateTime.Today;   
 
-        [Test]       
+        [TestCase(TestName = "CreateNewEmployeeAndAssignLeave")]       
         public void LogIn()
         {
             LoginPage loginPage = new LoginPage(driver);
 
-            loginPage.EnterUserName("Admin");
-            loginPage.EnterPassword("admin123");
-            loginPage.LoginButton.Click();
+            loginPage.EnterCredentials();
 
             AddNewEmployee();
         }
 
         public void AddNewEmployee()
         {
-            AddNewEmployeePage addNewEmployee = new AddNewEmployeePage(driver);            
+            AddNewEmployeePage addNewEmployee = new AddNewEmployeePage(driver);
 
-            driver.FindElement(By.XPath("//*[@id='menu_pim_viewPimModule']")).Click();
-            driver.FindElement(By.XPath("//*[@id='menu_pim_addEmployee']")).Click();
-
-            string firstName = employee.FirstName;
-            string lastName = employee.LastName;
-            string userName = employee.UserName;
-
-            addNewEmployee.EnterFirstName(firstName);
-            addNewEmployee.EnterLastName(lastName);
-            addNewEmployee.CreateLoginDetailsChkBox.Click();
-            addNewEmployee.EnterUserName(userName);
-            addNewEmployee.EnterPassword("Password1");
-            addNewEmployee.RepeatPassword("Password1");
+            addNewEmployee.GoToAddNewEmployeeTab();
+            addNewEmployee.EnterFullName(employee.FirstName, employee.LastName);
+            addNewEmployee.CreateLoginDetails(employee.UserName, "Password1");
             addNewEmployee.SaveButton.Click();
 
             AddPersonalDetails();
@@ -59,13 +47,11 @@ namespace SEB.Test.NewEmployee
             addPersonalDetails.EditButton.Click();
             addPersonalDetails.GenderRadioButton.Click();
 
-            var maritalStatus = addPersonalDetails.MaritalStatusDropDownList;
-            var selectStatus = new SelectElement(maritalStatus);
+            var selectStatus = new SelectElement(addPersonalDetails.MaritalStatusDropDownList);
             int statusCount = selectStatus.Options.Count();
             selectStatus.SelectByIndex(random.Next(1, statusCount));
 
-            var nationality = addPersonalDetails.NationalityDropDownList;
-            var selectNationality = new SelectElement(nationality);
+            var selectNationality = new SelectElement(addPersonalDetails.NationalityDropDownList);
             int nationalityCount = selectNationality.Options.Count();
             selectNationality.SelectByIndex(random.Next(1, nationalityCount));
 
@@ -82,18 +68,13 @@ namespace SEB.Test.NewEmployee
 
             addContactDetails.ContactDetailsSideNav.Click();
             addContactDetails.EditButton.Click();
-            addContactDetails.EnterStreetAddress1("Address1");
-            addContactDetails.EnterStreetAddress2("Address2");
-            addContactDetails.EnterCity("City");
-            addContactDetails.EnterZipCode("03210");
+            addContactDetails.EnterAddress("Address1", "Address2", "City", "03210");
 
-            var country = addContactDetails.CountryDropDownList;
-            var selectCountry = new SelectElement(country);
+            var selectCountry = new SelectElement(addContactDetails.CountryDropDownList);
             int countryCount = selectCountry.Options.Count();
             selectCountry.SelectByIndex(random.Next(1, countryCount));
 
-            addContactDetails.EnterMobileNumber("37012345678");
-            addContactDetails.EnterWorkEmail("work@email.com");
+            addContactDetails.EnterContactInfo("37012345678", "work@email.com");
             addContactDetails.SaveButton.Click();
 
             AddJobDetails();
@@ -135,17 +116,12 @@ namespace SEB.Test.NewEmployee
         {
             AssignLeavePage assignLeave = new AssignLeavePage(driver);
             
-            string firstName = employee.FirstName;
-            string lastName = employee.LastName;
-            string userName = employee.UserName;
-
             assignLeave.LeaveMenu.Click();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             assignLeave.AssignLeaveMenu.Click();
-            assignLeave.EnterEmployeeName(firstName + " " + lastName);
+            assignLeave.EnterEmployeeName(employee.FirstName + " " + employee.LastName);
 
-            var leaveType = assignLeave.LeaveType;
-            var selectLeaveType = new SelectElement(leaveType);
+            var selectLeaveType = new SelectElement(assignLeave.LeaveType);
             int leaveTypeCount = selectLeaveType.Options.Count();
             selectLeaveType.SelectByIndex(random.Next(1, leaveTypeCount));
 
@@ -172,19 +148,18 @@ namespace SEB.Test.NewEmployee
 
             assignLeave.AssignButton.SendKeys(Keys.Enter);
 
-            Thread.Sleep(2000); //zaji**li strigt..
+            Thread.Sleep(2000);
 
             driver.SwitchTo().Window(driver.WindowHandles.Last());
             driver.FindElement(By.Id("confirmOkButton")).Click();
 
-            driver.FindElement(By.XPath("//*[@id='welcome']")).Click();
+            assignLeave.WelcomeLinkButton.Click();
 
             Thread.Sleep(2000);
 
-            driver.FindElement(By.XPath("//*[@id='welcome-menu']/ul/li[2]/a")).SendKeys("");
-            driver.FindElement(By.XPath("//*[@id='welcome-menu']/ul/li[2]/a")).Click();
+            assignLeave.LogOut();
 
-            driver.FindElement(By.Id("txtUsername")).SendKeys(userName);
+            driver.FindElement(By.Id("txtUsername")).SendKeys(employee.UserName);
             driver.FindElement(By.Id("txtPassword")).SendKeys("Password1" + Keys.Enter);
 
             driver.FindElement(By.XPath("//*[@id='dashboard-quick-launch-panel-menu_holder']/table/tbody/tr/td[2]/div/a/img")).Click();

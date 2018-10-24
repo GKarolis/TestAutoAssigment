@@ -34,5 +34,12 @@ namespace SEB.Test.NewEmployee.PageObjects
             PasswordField.Clear();
             PasswordField.SendKeys(password);
         }
+
+        public void EnterCredentials()
+        {
+            EnterUserName("Admin");
+            EnterPassword("admin123");
+            LoginButton.Click();
+        }
     }
 }
